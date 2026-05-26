@@ -605,7 +605,7 @@
           </div>
         </div>
         <div class="cta-actions" id="cta-buttons">
-          <a href="mailto:plotandpalettestudio@gmail.com?subject=New%20project%20inquiry" class="btn btn-sun">Email me to get started →</a>
+          <a href="mailto:plotandpalettestudio@gmail.com?subject=New%20project%20inquiry" class="btn btn-sun no-picker">Email me to get started →</a>
           <a href="mailto:plotandpalettestudio@gmail.com" class="btn btn-ghost">plotandpalettestudio@gmail.com</a>
         </div>
       </div>
@@ -811,7 +811,7 @@
       });
     }
 
-    document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+    document.querySelectorAll('a[href^="mailto:"]:not(.no-picker)').forEach(link => {
       link.addEventListener('click', e => showPicker(e, link));
     });
 
