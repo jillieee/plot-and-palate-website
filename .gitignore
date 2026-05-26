@@ -1,0 +1,14 @@
+# Mac
+.DS_Store
+
+# Claude/agent files
+.agents/
+.claude/
+plot-and-palette-CLAUDE.md
+
+# Reference files (not part of the site)
+Cereal Club Website.png
+brand_assets/Plot-and-Palette-Brand-Guidelines.pdf
+brand_assets/Plot-and-Palette-Website-Copy.pdf
+brand_assets/Screenshot*.png
+brand_assets/plot-and-palette-brand-board.html

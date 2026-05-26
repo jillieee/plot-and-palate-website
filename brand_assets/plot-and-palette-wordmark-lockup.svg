@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="130" viewBox="0 0 520 130" role="img" aria-label="Plot &amp; Palette">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&amp;display=swap');
+    .wm{font-family:'Bricolage Grotesque','Arial',sans-serif;font-weight:800;font-size:52px;letter-spacing:-1px;}
+  </style>
+  <!-- mark -->
+  <g transform="translate(4,28) scale(0.72)">
+    <polyline points="14,70 52,50 90,56 136,18" fill="none" stroke="#16161D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+    <rect x="5" y="61" width="18" height="18" rx="3" fill="#13BFA6"/>
+    <rect x="43" y="41" width="18" height="18" rx="3" fill="#FFC857"/>
+    <rect x="81" y="47" width="18" height="18" rx="3" fill="#FF6B5B"/>
+    <rect x="125" y="8" width="22" height="22" rx="4" fill="#16161D"/>
+  </g>
+  <!-- wordmark -->
+  <text x="130" y="86" class="wm"><tspan fill="#16161D">Plot</tspan><tspan fill="#8B7BF5"> &amp; </tspan><tspan fill="#FF6B5B">Palette</tspan></text>
+</svg>

@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plot & Palette — Where your story meets the perfect design.</title>
+  <meta name="description" content="Plot & Palette builds modern personal-brand websites for consultants, creatives, and wellness professionals — warm, fast, and jargon-free.">
+  <link rel="icon" href="brand_assets/plot-and-palette-favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="brand_assets/plot-and-palette-favicon-180.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --lavender: #8B7BF5;
+      --lavender-dark: #6F5CE6;
+      --lavender-light: #EDE8FD;
+      --coral: #FF6B5B;
+      --coral-dark: #F0584B;
+      --teal: #13BFA6;
+      --teal-light: #D4F5F0;
+      --sunbeam: #FFC857;
+      --sunbeam-light: #FFF5D9;
+      --ink: #16161D;
+      --paper: #FCFBF7;
+      --slate: #6E6E7A;
+      --fd: 'Bricolage Grotesque', 'Arial Black', sans-serif;
+      --fb: 'Hanken Grotesk', 'Arial', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    #hero, #services, #work, #studio, #faq, #contact { scroll-margin-top: 100px; }
+    #cta-buttons { scroll-margin-top: 80px; }
+    .strip-marquee[id] { scroll-margin-top: 100px; }
+    body { font-family: var(--fb); background: var(--paper); color: var(--ink); line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+    button { cursor: pointer; border: none; background: none; font-family: var(--fb); }
+
+    @keyframes scroll-left { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ── SPARKLES ── */
+    .sparkle-wrap { position: relative; display: inline-block; }
+    @keyframes sparkle-pop {
+      0%   { opacity: 0; transform: scale(0)   rotate(75deg);  }
+      45%  { opacity: 1; transform: scale(1)   rotate(120deg); }
+      100% { opacity: 0; transform: scale(0)   rotate(150deg); }
+    }
+
+    /* ── NAV ── */
+    .nav { position: sticky; top: 0; z-index: 100; background: var(--paper); border-bottom: 2px solid var(--ink); }
+    .nav-inner { display: grid; grid-template-columns: 1.3fr auto 1fr; align-items: center; max-width: 1280px; margin: 0 auto; padding: 0 32px; height: 100px; }
+    .nav-right { display: flex; justify-content: flex-end; align-items: center; gap: 10px; }
+    .nav-logo svg { height: 96px; width: auto; display: block; }
+    .nav-links { display: flex; gap: 10px; list-style: none; justify-content: center; }
+    .nav-links a { font-weight: 700; font-size: 14px; color: white; padding: 9px 20px; border-radius: 100px; border: 2px solid var(--ink); transition: all 0.15s; white-space: nowrap; display: inline-block; }
+    .nav-links li:nth-child(1) a { background: var(--lavender-dark); }
+    .nav-links li:nth-child(2) a { background: var(--teal); }
+    .nav-links li:nth-child(3) a { background: var(--coral-dark); }
+    .nav-links li:nth-child(4) a { background: var(--ink); }
+    .nav-links a:hover { transform: translateY(-2px); box-shadow: 2px 3px 0 rgba(22,22,29,0.3); }
+    .nav-cta { background: var(--sunbeam); color: var(--ink); font-family: var(--fb); font-weight: 700; font-size: 14px; padding: 10px 22px; border-radius: 100px; border: 2px solid var(--ink); transition: all 0.15s; white-space: nowrap; display: inline-block; }
+    .nav-cta:hover { background: white; color: var(--ink); }
+    .hamburger { display: none; flex-direction: column; align-items: center; justify-content: center; gap: 5px; padding: 0; width: 36px; height: 36px; background: var(--sunbeam); border: 2px solid var(--ink); border-radius: 8px; flex-shrink: 0; }
+    .hamburger span { width: 22px; height: 2.5px; background: var(--ink); border-radius: 2px; display: block; transition: transform 0.2s ease, opacity 0.2s ease; }
+    .hamburger.is-open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+    .hamburger.is-open span:nth-child(2) { opacity: 0; }
+    .hamburger.is-open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+    .nav-drawer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; background: var(--paper); border-bottom: 0 solid var(--ink); }
+    .nav-drawer.open { max-height: 400px; border-bottom-width: 2px; }
+    .nav-drawer-links { list-style: none; padding: 8px 32px 20px; display: flex; flex-direction: column; }
+    .nav-drawer-links a { display: block; padding: 14px 0; font-family: var(--fd); font-weight: 700; font-size: 20px; color: var(--ink); border-bottom: 1px solid rgba(22,22,29,0.08); }
+    .nav-drawer-links li:last-child a { border-bottom: none; color: var(--lavender-dark); }
+
+    /* ── BUTTONS ── */
+    .btn { display: inline-flex; align-items: center; gap: 8px; font-family: var(--fb); font-weight: 700; font-size: 16px; padding: 14px 28px; border-radius: 100px; border: 2px solid var(--ink); transition: all 0.15s; white-space: nowrap; }
+    .btn-ink { background: var(--ink); color: white; }
+    .btn-ink:hover { background: #2c2c38; transform: translateY(-2px); }
+    .btn-ghost { background: transparent; color: var(--ink); }
+    .btn-ghost:hover { background: var(--ink); color: white; }
+    .btn-coral { background: var(--coral-dark); color: white; border-color: var(--coral-dark); }
+    .btn-coral:hover { background: #d44a3b; border-color: #d44a3b; transform: translateY(-2px); }
+    .btn-white { background: white; color: var(--ink); border-color: white; }
+    .btn-white:hover { background: var(--paper); transform: translateY(-2px); }
+    .btn-lav { background: var(--lavender-dark); color: white; border-color: var(--lavender-dark); }
+    .btn-lav:hover { background: #5a4bd1; border-color: #5a4bd1; transform: translateY(-2px); }
+    .btn-sun { background: var(--sunbeam); color: var(--ink); border-color: var(--ink); }
+    .btn-sun:hover { background: #f0b93e; transform: translateY(-2px); }
+    .btn-ghost-dark { background: transparent; color: rgba(252,251,247,0.6); border-color: rgba(255,255,255,0.2); }
+    .btn-ghost-dark:hover { border-color: rgba(255,255,255,0.5); color: white; }
+
+    /* ── PROJECT CARDS — polaroid style ── */
+    .pc {
+      text-decoration: none;
+      position: relative;
+      background: white;
+      border-radius: 6px;
+      padding: 12px 12px 20px;
+      display: flex; flex-direction: column;
+      border: 1px solid rgba(22,22,29,0.10);
+      flex-shrink: 0;
+      transition: filter 0.25s ease;
+      width: 230px; height: 160px;
+    }
+    .pc.lg { width: 460px; height: 300px; }
+    .pc:hover { filter: brightness(1.06); }
+    .pc-sparkle {
+      position: absolute; pointer-events: none; user-select: none;
+      font-size: 18px; line-height: 1; z-index: 2;
+      opacity: 0; transform: scale(0) rotate(-20deg);
+      transition: opacity 0.15s ease, transform 0.15s ease;
+    }
+    .pc:hover .pc-sparkle {
+      opacity: 1; transform: scale(1) rotate(15deg);
+      transition: opacity 0.3s ease, transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .pc-img { flex: 1; border-radius: 3px; margin-bottom: 12px; }
+    .pc-img.pc-img-photo { background-color: var(--ink); background-size: 100% auto; background-position: top center; }
+    .pc-lav .pc-img { background: var(--lavender); }
+    .pc-cor .pc-img { background: var(--coral); }
+    .pc-tel .pc-img { background: var(--teal); }
+    .pc-sun .pc-img { background: var(--sunbeam); }
+    .pc-ink .pc-img { background: var(--ink); }
+    .pc-label { font-family: var(--fd); font-weight: 800; font-size: 13px; color: var(--ink); line-height: 1.3; letter-spacing: -0.01em; }
+    .pc-label span { display: block; font-family: var(--fb); font-weight: 500; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); margin-top: 2px; }
+
+    /* ════════════════════════════════
+       HERO — sunbeam
+    ════════════════════════════════ */
+    .hero {
+      background:
+        radial-gradient(ellipse 140% 140% at 100%   0%,   rgba(139,123,245,0.65) 0%, transparent 55%),
+        radial-gradient(ellipse 140% 140% at   0% 110%,   rgba(19,191,166,0.65)  0%, transparent 55%),
+        radial-gradient(ellipse 110% 110% at  50%  55%,   rgba(255,200,87,0.55)  0%, transparent 52%),
+        radial-gradient(ellipse 110% 110% at 105% 105%,   rgba(255,107,91,0.60)  0%, transparent 52%),
+        radial-gradient(ellipse 100% 100% at   0%   0%,   rgba(255,107,91,0.45)  0%, transparent 52%),
+        var(--paper);
+      border-bottom: 2px solid var(--ink);
+      padding: 48px 32px;
+      position: relative;
+      overflow: hidden;
+      min-height: calc(100vh - 180px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-mark-bg { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+    .hero-mark-bg svg { width: 72%; max-width: 780px; opacity: 0.16; animation: mark-float 7s ease-in-out infinite; }
+    @keyframes mark-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+    .hero-inner { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; text-align: center; }
+    .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: var(--ink); color: var(--paper); font-family: var(--fb); font-weight: 700; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 15px; border-radius: 100px; margin-bottom: 24px; }
+    .hero h1 { font-family: var(--fd); font-weight: 800; font-size: clamp(42px, 6vw, 80px); line-height: 1.0; letter-spacing: -0.025em; color: var(--ink); margin-bottom: 24px; }
+    .hero-sub { font-size: 18px; color: rgba(22,22,29,0.7); line-height: 1.65; margin-bottom: 40px; max-width: 520px; margin-left: auto; margin-right: auto; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+
+    /* bento grid */
+    .bento-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto auto; gap: 12px; width: 100%; }
+    .bento-card { border-radius: 20px; border: 2px solid var(--ink); box-shadow: 4px 4px 0 rgba(22,22,29,0.22); padding: 20px; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, box-shadow 0.2s; overflow: hidden; min-height: 130px; }
+    .bento-card:hover { transform: translateY(-4px); box-shadow: 6px 8px 0 rgba(22,22,29,0.22); }
+    .bento-card.tall { grid-row: span 2; min-height: 272px; }
+    .bento-card.wide { grid-column: span 2; min-height: 100px; }
+    .bc-lav { background: var(--lavender); }
+    .bc-cor { background: var(--coral); }
+    .bc-tel { background: var(--teal); }
+    .bc-sun { background: var(--sunbeam); }
+    .bc-ink { background: var(--ink); }
+    .bento-tag { font-family: var(--fb); font-weight: 700; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(22,22,29,0.6); background: rgba(255,255,255,0.35); padding: 4px 10px; border-radius: 100px; display: inline-block; width: fit-content; }
+    .bc-ink .bento-tag { color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.12); }
+    .bento-name { font-family: var(--fd); font-weight: 800; font-size: 20px; letter-spacing: -0.02em; color: rgba(22,22,29,0.88); line-height: 1.1; margin-top: 8px; }
+    .bc-ink .bento-name { color: white; }
+    .bento-mockup { background: rgba(255,255,255,0.22); border-radius: 10px; overflow: hidden; flex: 1; margin-bottom: 16px; }
+    .bm-chrome { background: rgba(22,22,29,0.15); padding: 7px 10px; display: flex; align-items: center; gap: 5px; }
+    .bm-dots { display: flex; gap: 4px; }
+    .bm-dots span { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.55); display: block; }
+    .bm-body { padding: 12px; display: flex; flex-direction: column; gap: 6px; }
+    .bm-line { height: 8px; background: rgba(255,255,255,0.45); border-radius: 4px; }
+    .bm-line.s { width: 70%; }
+    .bm-line.xs { width: 45%; }
+    .bm-btn { height: 22px; width: 80px; border-radius: 11px; background: rgba(22,22,29,0.25); margin-top: 6px; }
+    .bento-swatches { display: flex; gap: 8px; margin-top: 12px; }
+    .bento-swatches span { width: 28px; height: 28px; border-radius: 6px; border: 2px solid rgba(22,22,29,0.15); flex-shrink: 0; }
+
+    /* ════════════════════════════════
+       STRIP — lavender marquee + scrollable cards
+    ════════════════════════════════ */
+    .strip { background:
+        radial-gradient(ellipse 140% 140% at 100%   0%,   rgba(139,123,245,0.65) 0%, transparent 55%),
+        radial-gradient(ellipse 140% 140% at   0% 110%,   rgba(19,191,166,0.65)  0%, transparent 55%),
+        radial-gradient(ellipse 110% 110% at  50%  55%,   rgba(255,200,87,0.55)  0%, transparent 52%),
+        radial-gradient(ellipse 110% 110% at 105% 105%,   rgba(255,107,91,0.60)  0%, transparent 52%),
+        radial-gradient(ellipse 100% 100% at   0%   0%,   rgba(255,107,91,0.45)  0%, transparent 52%),
+        var(--paper);
+      border-bottom: 2px solid var(--ink); }
+    .strip-marquee { background: var(--lavender); border-bottom: 2px solid var(--ink); height: 40px; }
+    .proj-row-wrap { width: 938px; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
+    .proj-row-wrap::-webkit-scrollbar { display: none; }
+    .proj-row { display: flex; gap: 18px; width: max-content; }
+
+    /* ════════════════════════════════
+       SERVICES GRID
+    ════════════════════════════════ */
+    .svc-section { background: var(--paper); border-bottom: 2px solid var(--ink); padding: 64px 32px; }
+    .svc-inner { max-width: 1280px; margin: 0 auto; }
+    .sec-h2 { font-family: var(--fd); font-weight: 800; font-size: clamp(36px, 4vw, 60px); letter-spacing: -0.025em; line-height: 1.0; color: var(--ink); margin-bottom: 40px; }
+    .svc-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+    .svc-tile { border-radius: 20px; padding: 28px 22px; border: 2px solid var(--ink); transition: transform 0.2s, box-shadow 0.2s; }
+    .svc-tile:hover { transform: translateY(-5px); box-shadow: 4px 4px 0 rgba(22,22,29,0.14); }
+    .svc-tile.c-lav { background: radial-gradient(ellipse 140% 140% at 100% 0%, rgba(19,191,166,0.70) 0%, transparent 65%), radial-gradient(ellipse 130% 130% at 0% 100%, rgba(139,123,245,0.55) 0%, transparent 65%), rgba(19,191,166,0.15); }
+    .svc-tile.c-cor { background: radial-gradient(ellipse 140% 140% at 0% 100%, rgba(255,200,87,0.70) 0%, transparent 65%), radial-gradient(ellipse 130% 130% at 100% 0%, rgba(255,107,91,0.55) 0%, transparent 65%), rgba(255,200,87,0.18); }
+    .svc-tile.c-tel { background: radial-gradient(ellipse 140% 140% at 0% 0%, rgba(255,107,91,0.70) 0%, transparent 65%), radial-gradient(ellipse 130% 130% at 100% 100%, rgba(255,200,87,0.55) 0%, transparent 65%), rgba(255,107,91,0.12); }
+    .svc-tile.c-sun { background: radial-gradient(ellipse 140% 140% at 100% 100%, rgba(139,123,245,0.70) 0%, transparent 65%), radial-gradient(ellipse 130% 130% at 0% 0%, rgba(19,191,166,0.55) 0%, transparent 65%), rgba(139,123,245,0.15); }
+    .svc-icon { width: 40px; height: 40px; margin-bottom: 16px; }
+    .svc-icon svg { width: 100%; height: 100%; }
+    .c-lav .svc-icon { color: var(--teal); }
+    .c-cor .svc-icon { color: var(--sunbeam); }
+    .c-tel .svc-icon { color: var(--coral); }
+    .c-sun .svc-icon { color: var(--lavender); }
+    .svc-tag { font-family: var(--fb); font-weight: 700; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; display: block; }
+    .c-lav .svc-tag, .c-cor .svc-tag, .c-tel .svc-tag, .c-sun .svc-tag { color: var(--slate); }
+    .svc-tile h3 { font-family: var(--fd); font-weight: 800; font-size: 21px; letter-spacing: -0.02em; line-height: 1.1; color: var(--ink); margin-bottom: 10px; }
+    .svc-tile p { font-size: 14px; color: var(--slate); line-height: 1.65; }
+
+    /* ════════════════════════════════
+       CAROUSEL
+    ════════════════════════════════ */
+    .strip-header { max-width: 1280px; margin: 0 auto; padding: 52px 32px 0; text-align: center; }
+    .strip-header .sec-h2 { margin-bottom: 6px; }
+    .strip-header .sec-h2:first-of-type { margin-bottom: 38px; }
+    .strip-h3 { font-family: var(--fd); font-weight: 800; font-size: clamp(28px, 3.2vw, 46px); letter-spacing: -0.025em; line-height: 1.1; color: var(--ink); margin-bottom: 6px; display: inline-block; }
+    .strip-sub { font-family: var(--fb); font-size: 18px; font-weight: 400; color: var(--slate); margin-top: 0; }
+    .carousel-wrap { display: flex; align-items: center; justify-content: center; gap: 24px; padding: 32px 32px 72px; }
+    .carousel-btn { width: 44px; height: 44px; border-radius: 50%; background: var(--ink); border: 2px solid var(--ink); color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.15s, transform 0.15s; flex-shrink: 0; }
+    .carousel-btn:hover { background: var(--lavender-dark); border-color: var(--lavender-dark); transform: scale(1.08); }
+    .carousel-btn:disabled { cursor: default; }
+    .carousel-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    /* ════════════════════════════════
+       THE STUDIO
+    ════════════════════════════════ */
+    .studio { background: var(--lavender-light); border-bottom: 2px solid var(--ink); padding: 60px 32px; }
+    .studio-heading { max-width: 1280px; margin: 0 auto 32px; }
+    .studio-inner { max-width: 860px; margin: 0 auto; display: grid; grid-template-columns: auto 1fr; gap: 52px; align-items: start; }
+    /* polaroid card */
+    .studio-polaroid { background: white; border-radius: 6px; padding: 12px 12px 20px; border: 1px solid rgba(22,22,29,0.10); box-shadow: 0 4px 20px rgba(22,22,29,0.10); width: 260px; flex-shrink: 0; }
+    .studio-photo { width: 100%; height: 320px; border-radius: 3px; background-image: url('brand_assets/Jillie Headshot.png'); background-size: cover; background-position: center top; margin-bottom: 12px; filter: brightness(1.08) saturate(1.1) contrast(0.96); }
+    .studio-polaroid-label { font-family: var(--fd); font-weight: 800; font-size: 13px; color: var(--ink); line-height: 1.3; letter-spacing: -0.01em; }
+    .studio-polaroid-label span { display: block; font-family: var(--fb); font-weight: 500; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); margin-top: 2px; }
+    /* text side */
+    .studio-text h2 { font-family: var(--fd); font-weight: 800; font-size: clamp(36px, 4vw, 60px); letter-spacing: -0.025em; line-height: 1.0; color: var(--ink); margin-bottom: 22px; }
+    .studio-text p { font-size: 17px; color: rgba(22,22,29,0.68); line-height: 1.78; margin-bottom: 16px; max-width: 560px; }
+    .studio-text p strong { color: var(--ink); font-weight: 600; }
+    .studio-stats { display: flex; gap: 40px; margin-top: 32px; flex-wrap: wrap; }
+    .stat strong { display: block; font-family: var(--fd); font-size: 42px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; color: var(--ink); }
+    .stat span { font-size: 14px; color: var(--slate); font-weight: 500; }
+
+    /* ════════════════════════════════
+       FOLLOW US — coral
+    ════════════════════════════════ */
+    .follow { background: var(--coral); border-bottom: 2px solid var(--ink); padding: 72px 32px; text-align: center; }
+    .follow h2 { font-family: var(--fd); font-weight: 800; font-size: clamp(52px, 10vw, 128px); letter-spacing: -0.03em; line-height: 0.92; color: var(--ink); margin-bottom: 40px; }
+    .social-row { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+    .social-btn { display: inline-flex; align-items: center; gap: 10px; background: var(--ink); color: var(--paper); font-family: var(--fb); font-weight: 700; font-size: 16px; padding: 14px 28px; border-radius: 100px; border: 2px solid var(--ink); transition: all 0.15s; }
+    .social-btn:hover { background: white; color: var(--ink); }
+
+    /* ════════════════════════════════
+       FAQ
+    ════════════════════════════════ */
+    .faq {
+      background:
+        radial-gradient(ellipse 140% 140% at 100%   0%,   rgba(139,123,245,0.65) 0%, transparent 55%),
+        radial-gradient(ellipse 140% 140% at   0% 110%,   rgba(19,191,166,0.65)  0%, transparent 55%),
+        radial-gradient(ellipse 110% 110% at  50%  55%,   rgba(255,200,87,0.55)  0%, transparent 52%),
+        radial-gradient(ellipse 110% 110% at 105% 105%,   rgba(255,107,91,0.60)  0%, transparent 52%),
+        radial-gradient(ellipse 100% 100% at   0%   0%,   rgba(255,107,91,0.45)  0%, transparent 52%),
+        var(--paper);
+      border-bottom: 2px solid var(--ink); padding: 72px 32px;
+    }
+    .faq-inner { max-width: 800px; margin: 0 auto; }
+    .faq-item { border-top: 2px solid var(--ink); }
+    .faq-item:last-child { border-bottom: 2px solid var(--ink); }
+    .faq-btn { width: 100%; text-align: left; background: none; border: none; padding: 20px 0; display: flex; align-items: center; justify-content: space-between; gap: 16px; cursor: pointer; font-family: var(--fd); font-weight: 700; font-size: 19px; color: var(--ink); letter-spacing: -0.015em; transition: color 0.15s; }
+    .faq-btn:hover { color: var(--lavender-dark); }
+    .faq-icon { width: 32px; height: 32px; border-radius: 50%; background: var(--ink); color: white; display: flex; align-items: center; justify-content: center; font-size: 20px; font-family: var(--fb); font-weight: 400; flex-shrink: 0; transition: transform 0.25s, background 0.15s; line-height: 1; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); background: var(--lavender-dark); }
+    .faq-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+    .faq-item.open .faq-body { max-height: 260px; }
+    .faq-body p { padding-bottom: 22px; font-size: 16px; color: var(--slate); line-height: 1.75; }
+
+    /* ════════════════════════════════
+       CTA — ink
+    ════════════════════════════════ */
+    .cta { background: var(--paper); border-bottom: 2px solid var(--ink); padding: 72px 32px; }
+    .cta-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto; grid-template-areas: "text visual" "actions visual"; gap: 64px; align-items: start; }
+    .cta-text { grid-area: text; }
+    .cta-visual { grid-area: visual; }
+    .cta-actions { grid-area: actions; }
+    .cta h2 { font-family: var(--fd); font-weight: 800; font-size: clamp(42px, 6vw, 80px); letter-spacing: -0.03em; line-height: 0.93; color: var(--ink); margin-bottom: 24px; }
+    .cta h2 em { color: var(--lavender); font-style: normal; }
+    .cta p { font-size: 18px; color: rgba(22,22,29,0.68); line-height: 1.7; margin-bottom: 36px; max-width: 460px; }
+    .cta-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+    .cta-actions .btn-sun { font-size: 15px; padding: 13px 28px; }
+    .cta-visual { position: relative; width: 400px; height: 340px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .cta-frame-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .cta-visual-card { width: 310px; position: relative; z-index: 1; background: white; border-radius: 6px; padding: 12px 12px 20px; border: 1px solid rgba(22,22,29,0.10); box-shadow: 0 4px 20px rgba(22,22,29,0.08); }
+    .cta-visual-card-img { height: 196px; border-radius: 3px; margin-bottom: 12px; background: radial-gradient(ellipse 130% 130% at 100% 0%, rgba(139,123,245,0.7) 0%, transparent 70%), radial-gradient(ellipse 130% 130% at 0% 100%, rgba(19,191,166,0.7) 0%, transparent 70%), radial-gradient(ellipse 130% 130% at 100% 100%, rgba(255,107,91,0.7) 0%, transparent 70%), radial-gradient(ellipse 130% 130% at 0% 0%, rgba(255,200,87,0.7) 0%, transparent 70%), var(--paper); }
+    .cta-visual-card-label { font-family: var(--fd); font-weight: 800; font-size: 13px; color: var(--ink); letter-spacing: -0.01em; line-height: 1.3; }
+    .cta-visual-card-label span { display: block; font-family: var(--fb); font-weight: 500; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); margin-top: 2px; }
+
+    /* ════════════════════════════════
+       FOOTER
+    ════════════════════════════════ */
+    .footer { background: var(--ink); border-top: 2px solid rgba(255,255,255,0.08); padding: 28px 32px; }
+    .footer-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 24px; }
+    .footer-left { display: flex; flex-direction: row; align-items: center; gap: 16px; }
+    .footer-logo svg { height: 28px; width: auto; display: block; }
+    .footer-links { display: flex; gap: 24px; list-style: none; flex-wrap: wrap; justify-content: center; }
+    .footer-links a { font-size: 14px; font-weight: 500; color: rgba(252,251,247,0.45); transition: color 0.15s; }
+    .footer-links a:hover { color: var(--paper); }
+    .footer-copy { font-size: 14px; color: rgba(252,251,247,0.28); white-space: nowrap; }
+
+    /* ════════════════════════════════
+       RESPONSIVE
+    ════════════════════════════════ */
+    @media (max-width: 1024px) {
+      .svc-grid { grid-template-columns: repeat(2,1fr); }
+      .cta-inner { grid-template-columns: 1fr; grid-template-areas: "text" "visual" "actions"; text-align: center; gap: 0; }
+      .cta-text { margin-bottom: -28px; }
+      .cta-actions { margin-top: 16px; }
+      .cta h2 { text-align: center; }
+      .cta p { text-align: center; margin-left: auto; margin-right: auto; }
+      .cta-actions { justify-content: center; }
+      .cta-visual { width: 100%; max-width: 400px; margin: 0 auto; }
+      .cta-visual-card { width: 77.5%; }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
+      .nav-inner { grid-template-columns: 1fr auto; grid-template-areas: "logo right"; overflow: hidden; }
+      .nav-logo { grid-area: logo; overflow: hidden; }
+      .nav-right { grid-area: right; }
+      .nav-logo svg { height: 74px; width: auto; }
+      .hamburger { display: flex; }
+      .hero { padding: 72px 20px 64px; }
+      .studio-inner { grid-template-columns: 1fr; gap: 28px; }
+      .studio-polaroid { width: 100%; max-width: 320px; margin: 0 auto; }
+      .studio-text p { max-width: 100%; }
+      .studio-text div[style] { text-align: center !important; }
+      .strip-header { padding-left: 20px; padding-right: 20px; }
+    }
+    @media (max-width: 600px) {
+      .hero { padding: 48px 20px; }
+      .svc-section, .faq, .cta, .studio { padding-left: 20px; padding-right: 20px; }
+      .carousel-wrap { gap: 12px; padding: 40px 16px; }
+      .proj-row-wrap { flex: 1; min-width: 0; scroll-snap-type: x mandatory; }
+      .proj-row .pc { scroll-snap-align: start; }
+      .svc-grid { grid-template-columns: 1fr; }
+      .pc { width: 200px; height: 140px; }
+      .pc.lg { width: 213px; height: 149px; }
+      .cta-visual-card-img { height: 120px; }
+      .cta-actions { flex-direction: column; align-items: center; }
+      .cta-actions .btn { width: 100%; justify-content: center; }
+      .cta-actions .btn-sun { pointer-events: none; }
+      .footer { padding: 20px 20px; }
+      .footer-inner { display: grid; grid-template-columns: 1fr auto; grid-template-areas: "left copy" "links links"; align-items: center; gap: 8px 12px; margin: 0; max-width: 100%; }
+      .footer-left { grid-area: left; align-items: center; gap: 10px; }
+      .footer-left .footer-copy { display: none; }
+      .footer-links { grid-area: links; display: flex; flex-direction: row; flex-wrap: nowrap; gap: 0 12px; justify-content: space-between; }
+      .footer-copy { grid-area: copy; text-align: right; font-size: 12px; white-space: nowrap; align-self: center; }
+    }
+
+    /* ── EMAIL PICKER ── */
+    .email-picker { position: fixed; z-index: 500; background: white; border: 2px solid var(--ink); border-radius: 12px; padding: 6px; box-shadow: 4px 4px 0 rgba(22,22,29,0.12); display: none; flex-direction: column; gap: 2px; min-width: 230px; }
+    .email-picker.open { display: flex; }
+    .ep-btn { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 8px; border: none; background: none; font-family: var(--fb); font-size: 14px; font-weight: 500; color: var(--ink); cursor: pointer; text-align: left; width: 100%; transition: background 0.1s; }
+    .ep-btn:hover { background: var(--paper); }
+    .ep-icon { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+    .ep-copy .ep-icon { background: var(--lavender-light); color: var(--lavender-dark); }
+    .ep-gmail .ep-icon { background: #fce8e6; color: #d93025; }
+    .ep-outlook .ep-icon { background: #e8f0fe; color: #1a73e8; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="#hero" class="nav-logo" aria-label="Plot &amp; Palette home">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 130" role="img" aria-label="Plot &amp; Palette">
+          <g transform="translate(4,28) scale(0.72)">
+            <polyline points="14,70 52,50 90,56 136,18" fill="none" stroke="#16161D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+            <rect x="5" y="61" width="18" height="18" rx="3" fill="#13BFA6"/>
+            <rect x="43" y="41" width="18" height="18" rx="3" fill="#FFC857"/>
+            <rect x="81" y="47" width="18" height="18" rx="3" fill="#FF6B5B"/>
+            <rect x="125" y="8" width="22" height="22" rx="4" fill="#16161D"/>
+          </g>
+          <text x="130" y="86" font-family="'Bricolage Grotesque', 'Arial Black', sans-serif" font-weight="800" font-size="52" letter-spacing="-1"><tspan fill="#16161D">Plot</tspan><tspan fill="#8B7BF5"> &amp; </tspan><tspan fill="#FF6B5B">Palette</tspan></text>
+        </svg>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#work">Work</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#studio">About</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+      <div class="nav-right">
+        <a href="#contact" class="nav-cta">Book a call</a>
+        <button class="hamburger" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="nav-drawer" id="nav-drawer" aria-hidden="true">
+      <ul class="nav-drawer-links">
+        <li><a href="#work">Work</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#studio">About</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#cta-buttons">Book a call</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- HERO TOP BAR -->
+    <div class="strip-marquee"></div>
+
+    <!-- HERO -->
+    <section class="hero" id="hero" aria-label="Hero">
+      <div class="hero-mark-bg" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 86">
+          <polyline points="14,70 52,50 90,56 136,18" fill="none" stroke="#16161D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="5" y="61" width="18" height="18" rx="3" fill="#13BFA6"/>
+          <rect x="43" y="41" width="18" height="18" rx="3" fill="#FFC857"/>
+          <rect x="81" y="47" width="18" height="18" rx="3" fill="#FF6B5B"/>
+          <rect x="125" y="8" width="22" height="22" rx="4" fill="#16161D"/>
+        </svg>
+      </div>
+      <div class="hero-inner">
+        <div class="hero-tag"><span style="color:var(--sunbeam)">✦</span> A Personal Brand-Hub Design Studio</div>
+        <h1>Where your <span style="color:var(--lavender)">story</span> meets the perfect <span style="color:var(--coral)">design.</span></h1>
+        <p class="hero-sub">Plot &amp; Palette designs modern websites for creatives, consultants, and small businesses that are clean, fast, beautiful on every phone, and built to turn visitors into clients. Not a template, but a personal brand-hub that's the heart of your professional presence.</p>
+        <div class="hero-actions">
+          <a href="mailto:plotandpalettestudio@gmail.com?subject=New%20project%20inquiry" class="btn btn-ink">Start your project →</a>
+          <span class="sparkle-wrap"><a href="#work" class="btn btn-white">See the work →</a></span>
+        </div>
+      </div>
+    </section>
+
+    <div class="strip-marquee" id="services"></div>
+    <!-- SERVICES -->
+    <section class="svc-section">
+      <div class="svc-inner">
+        <h2 class="sec-h2">Why Plot <span style="color:var(--lavender)">&amp;</span> <span style="color:var(--coral)">Palette</span><span style="color:var(--coral)">?</span></h2>
+        <div class="svc-grid">
+          <div class="svc-tile c-lav">
+            <div class="svc-icon"><svg viewBox="0 0 21 21" fill="currentColor"><path d="M9.82531 0.843845C10.0553 0.215178 10.9446 0.215178 11.1746 0.843845L11.8618 2.72026C12.4006 4.19229 12.3916 6.39157 13.5 7.5C14.6084 8.60843 16.8077 8.59935 18.2797 9.13822L20.1561 9.82534C20.7858 10.0553 20.7858 10.9447 20.1561 11.1747L18.2797 11.8618C16.8077 12.4007 14.6084 12.3916 13.5 13.5C12.3916 14.6084 12.4006 16.8077 11.8618 18.2798L11.1746 20.1562C10.9446 20.7858 10.0553 20.7858 9.82531 20.1562L9.13819 18.2798C8.59932 16.8077 8.60843 14.6084 7.5 13.5C6.39157 12.3916 4.19225 12.4007 2.72023 11.8618L0.843814 11.1747C0.215148 10.9447 0.215148 10.0553 0.843814 9.82534L2.72023 9.13822C4.19225 8.59935 6.39157 8.60843 7.5 7.5C8.60843 6.39157 8.59932 4.19229 9.13819 2.72026L9.82531 0.843845Z"/></svg></div>
+            <span class="svc-tag">Built for you</span>
+            <h3>Built around you, not a template.</h3>
+            <p>Every project starts with getting to know your business, your people, and the feeling you're after. The result is unmistakably yours!</p>
+          </div>
+          <div class="svc-tile c-cor">
+            <div class="svc-icon"><svg viewBox="0 0 21 21" fill="currentColor"><path d="M9.82531 0.843845C10.0553 0.215178 10.9446 0.215178 11.1746 0.843845L11.8618 2.72026C12.4006 4.19229 12.3916 6.39157 13.5 7.5C14.6084 8.60843 16.8077 8.59935 18.2797 9.13822L20.1561 9.82534C20.7858 10.0553 20.7858 10.9447 20.1561 11.1747L18.2797 11.8618C16.8077 12.4007 14.6084 12.3916 13.5 13.5C12.3916 14.6084 12.4006 16.8077 11.8618 18.2798L11.1746 20.1562C10.9446 20.7858 10.0553 20.7858 9.82531 20.1562L9.13819 18.2798C8.59932 16.8077 8.60843 14.6084 7.5 13.5C6.39157 12.3916 4.19225 12.4007 2.72023 11.8618L0.843814 11.1747C0.215148 10.9447 0.215148 10.0553 0.843814 9.82534L2.72023 9.13822C4.19225 8.59935 6.39157 8.60843 7.5 7.5C8.60843 6.39157 8.59932 4.19229 9.13819 2.72026L9.82531 0.843845Z"/></svg></div>
+            <span class="svc-tag">No black boxes</span>
+            <h3>You'll actually understand it.</h3>
+            <p>I explain everything in plain language and we'll go over edits at every stage. No surprises, no mystery. Just a clear view of your site as it comes together.</p>
+          </div>
+          <div class="svc-tile c-tel">
+            <div class="svc-icon"><svg viewBox="0 0 21 21" fill="currentColor"><path d="M9.82531 0.843845C10.0553 0.215178 10.9446 0.215178 11.1746 0.843845L11.8618 2.72026C12.4006 4.19229 12.3916 6.39157 13.5 7.5C14.6084 8.60843 16.8077 8.59935 18.2797 9.13822L20.1561 9.82534C20.7858 10.0553 20.7858 10.9447 20.1561 11.1747L18.2797 11.8618C16.8077 12.4007 14.6084 12.3916 13.5 13.5C12.3916 14.6084 12.4006 16.8077 11.8618 18.2798L11.1746 20.1562C10.9446 20.7858 10.0553 20.7858 9.82531 20.1562L9.13819 18.2798C8.59932 16.8077 8.60843 14.6084 7.5 13.5C6.39157 12.3916 4.19225 12.4007 2.72023 11.8618L0.843814 11.1747C0.215148 10.9447 0.215148 10.0553 0.843814 9.82534L2.72023 9.13822C4.19225 8.59935 6.39157 8.60843 7.5 7.5C8.60843 6.39157 8.59932 4.19229 9.13819 2.72026L9.82531 0.843845Z"/></svg></div>
+            <span class="svc-tag">Full ownership</span>
+            <h3>You own it when we're done.</h3>
+            <p>Your site, your domain, your accounts. I'll never hold your web address hostage. That's a promise, in writing, on every project.</p>
+          </div>
+          <div class="svc-tile c-sun">
+            <div class="svc-icon"><svg viewBox="0 0 21 21" fill="currentColor"><path d="M9.82531 0.843845C10.0553 0.215178 10.9446 0.215178 11.1746 0.843845L11.8618 2.72026C12.4006 4.19229 12.3916 6.39157 13.5 7.5C14.6084 8.60843 16.8077 8.59935 18.2797 9.13822L20.1561 9.82534C20.7858 10.0553 20.7858 10.9447 20.1561 11.1747L18.2797 11.8618C16.8077 12.4007 14.6084 12.3916 13.5 13.5C12.3916 14.6084 12.4006 16.8077 11.8618 18.2798L11.1746 20.1562C10.9446 20.7858 10.0553 20.7858 9.82531 20.1562L9.13819 18.2798C8.59932 16.8077 8.60843 14.6084 7.5 13.5C6.39157 12.3916 4.19225 12.4007 2.72023 11.8618L0.843814 11.1747C0.215148 10.9447 0.215148 10.0553 0.843814 9.82534L2.72023 9.13822C4.19225 8.59935 6.39157 8.60843 7.5 7.5C8.60843 6.39157 8.59932 4.19229 9.13819 2.72026L9.82531 0.843845Z"/></svg></div>
+            <span class="svc-tag">Stay in control</span>
+            <h3>You can edit it yourself.</h3>
+            <p>Every site comes with a clear, step-by-step guide so you can make changes anytime. Want me to handle it instead? There's a managed plan for that too.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECT STRIP -->
+    <div class="strip" id="work">
+      <div class="strip-marquee"></div>
+      <div class="strip-header">
+        <h2 class="sec-h2">Check Out <span style="color:var(--lavender)">The</span> <span style="color:var(--coral)">Goods:</span></h2>
+        <span class="sparkle-wrap" style="margin-bottom: 6px; transform: translateY(-10px);"><h3 class="strip-h3">P<span style="color:var(--lavender)">&amp;</span>P's Work</h3></span>
+        <p class="strip-sub">A few of the spaces we've built together.</p>
+      </div>
+      <div class="carousel-wrap">
+      <button class="carousel-btn prev" aria-label="Previous projects" id="proj-prev">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="proj-row-wrap" id="proj-scroll" role="region" aria-label="Recent projects — scroll to see more">
+        <div class="proj-row" aria-hidden="true">
+          <a class="pc pc-cor lg" href="https://www.themeritcompany.com" target="_blank" rel="noopener noreferrer">
+            <div class="pc-img pc-img-photo" style="background-image: url('brand_assets/merit-company.png'); background-size: 100% auto; background-position: top center;"></div>
+            <div class="pc-label">The Merit Company<span>Corporate</span></div>
+          </a>
+          <div class="pc pc-tel lg">
+            <div class="pc-img"></div>
+            <div class="pc-label">The Kundalini Club<span>Wellness</span></div>
+          </div>
+          <div class="pc pc-lav lg">
+            <div class="pc-img"></div>
+            <div class="pc-label">Follow The Whim<span>Course Page</span></div>
+          </div>
+          <div class="pc pc-sun lg">
+            <div class="pc-img"></div>
+            <div class="pc-label">Meadow &amp; Light<span>Photography</span></div>
+          </div>
+          <div class="pc pc-ink lg">
+            <div class="pc-img"></div>
+            <div class="pc-label">Root &amp; Rise Studio<span>Wellness</span></div>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-btn next" aria-label="Next projects" id="proj-next">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+      </button>
+      </div><!-- end carousel-wrap -->
+    </div>
+
+    <div class="strip-marquee" id="studio"></div>
+    <!-- THE STUDIO -->
+    <section class="studio">
+      <div class="studio-heading">
+        <h2 class="sec-h2">The Studio</h2>
+      </div>
+      <div class="studio-inner">
+        <div class="studio-polaroid">
+          <div class="studio-photo"></div>
+          <div class="studio-polaroid-label">
+            Jillie Eichler
+            <span>Founder &amp; Designer</span>
+          </div>
+        </div>
+        <div class="studio-text">
+          <p>Hi, I'm Jillie. I come from a business background (a degree in management and marketing) but I've always had one foot in the creative world as an <strong>actor and a writer</strong>, and I've even dabbled in <strong>jewelry design</strong>. That mix is the magic and the whole point of Plot &amp; Palette.</p>
+          <p>The plot is your story and strategy, the palette is how it looks and feels.</p>
+          <p>Most websites get one without the other. I think like a marketer and feel like an artist, so I can build you a site that's both! I aim to build sites that are beautiful, unique to you, and built to bring in clients.</p>
+          <p>Fast, joyfully collaborative, people-forward, and jargon-free. I explain everything in plain language, send preview links at every stage, and won't stop until the result is exactly what we set out to make.</p>
+          <div style="text-align: right; margin-top: 44px;"><a href="mailto:plotandpalettestudio@gmail.com?subject=New%20project%20inquiry" class="btn btn-ink">Create with me →</a></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="strip-marquee" id="faq"></div>
+    <!-- FAQ -->
+    <section class="faq">
+      <div class="faq-inner">
+        <h2 class="sec-h2">P<span style="color:var(--lavender)">&amp;</span><span style="color:var(--coral)">P</span> FAQS</h2>
+        <div>
+          <div class="faq-item">
+            <button class="faq-btn" aria-expanded="false">How long does a project take?<span class="faq-icon" aria-hidden="true">+</span></button>
+            <div class="faq-body"><p>Most builds run 2 to 4 weeks from kickoff to launch. Express Launch projects are done in two weeks flat. Larger Signature Site projects with custom branding can run 4 to 6 weeks. We'll set a clear timeline before we begin. No surprises.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-btn" aria-expanded="false">What do I need to bring to get started?<span class="faq-icon" aria-hidden="true">+</span></button>
+            <div class="faq-body"><p>Not much! A clear sense of your business, your audience, and your goals is a great start. If you have existing branding, logos, or photos, even better. If you don't have any of that yet, that's exactly what the discovery call is for.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-btn" aria-expanded="false">Can I update my site myself after launch?<span class="faq-icon" aria-hidden="true">+</span></button>
+            <div class="faq-body"><p>Absolutely. Every site comes with a handoff call and a plain-English guide covering how to make common edits. You shouldn't need to call a developer every time you want to update a photo or change your bio.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-btn" aria-expanded="false">Do you offer ongoing support?<span class="faq-icon" aria-hidden="true">+</span></button>
+            <div class="faq-body"><p>Yes! We offer monthly care plans for clients who'd rather not think about it. Ask about this on your discovery call and we'll share the details.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-btn" aria-expanded="false">What does it cost?<span class="faq-icon" aria-hidden="true">+</span></button>
+            <div class="faq-body"><p>Every project is scoped individually. Express Launch starts at a flat rate; Signature Site and Brand Refresh projects are custom-quoted. The discovery call is free with no obligation. Book one and let's figure out what makes sense for you.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="strip-marquee" id="contact"></div>
+    <!-- CTA -->
+    <section class="cta" aria-label="Book a call">
+      <div class="cta-inner">
+        <div class="cta-text">
+          <h2>Let's Build Something You're <em>Proud</em> to <span style="color:var(--coral)">Share.</span></h2>
+          <p>Tell me a little about your project and what you're hoping for. I'll get back to you with no-fluff next steps!</p>
+        </div>
+        <div class="cta-visual" aria-hidden="true">
+          <svg class="cta-frame-svg" viewBox="0 0 400 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- lines connecting swatches -->
+            <line x1="20" y1="10" x2="380" y2="10" stroke="#16161D" stroke-width="2"/>
+            <line x1="20" y1="330" x2="380" y2="330" stroke="#16161D" stroke-width="2"/>
+            <line x1="10" y1="20" x2="10" y2="320" stroke="#16161D" stroke-width="2"/>
+            <line x1="390" y1="20" x2="390" y2="320" stroke="#16161D" stroke-width="2"/>
+            <!-- corner swatches -->
+            <rect x="0" y="0" width="20" height="20" rx="3" fill="#13BFA6"/>
+            <rect x="380" y="0" width="20" height="20" rx="3" fill="#FFC857"/>
+            <rect x="380" y="320" width="20" height="20" rx="3" fill="#FF6B5B"/>
+            <rect x="0" y="320" width="20" height="20" rx="3" fill="#8B7BF5"/>
+          </svg>
+          <div class="cta-visual-card">
+            <div class="cta-visual-card-img"></div>
+            <div class="cta-visual-card-label">Your next site<span>Coming soon <span style="color:var(--sunbeam);display:inline">✦</span></span></div>
+          </div>
+        </div>
+        <div class="cta-actions" id="cta-buttons">
+          <a href="mailto:plotandpalettestudio@gmail.com?subject=New%20project%20inquiry" class="btn btn-sun">Email me to get started →</a>
+          <a href="mailto:plotandpalettestudio@gmail.com" class="btn btn-ghost">plotandpalettestudio@gmail.com</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <div class="strip-marquee"></div>
+  <footer class="footer" aria-label="Site footer">
+    <div class="footer-inner">
+      <div class="footer-left">
+        <a href="#hero" class="footer-logo" aria-label="Plot &amp; Palette home">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 86" role="img" aria-label="Plot &amp; Palette" style="height:30px;width:auto">
+            <polyline points="14,70 52,50 90,56 136,18" fill="none" stroke="#FCFBF7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+            <rect x="5" y="61" width="18" height="18" rx="3" fill="#13BFA6"/>
+            <rect x="43" y="41" width="18" height="18" rx="3" fill="#FFC857"/>
+            <rect x="81" y="47" width="18" height="18" rx="3" fill="#FF6B5B"/>
+            <rect x="125" y="8" width="22" height="22" rx="4" fill="#8B7BF5"/>
+          </svg>
+        </a>
+        <p class="footer-copy">where your story meets the perfect design</p>
+      </div>
+      <ul class="footer-links">
+        <li><a href="#work">Work</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#studio">About</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="mailto:plotandpalettestudio@gmail.com?subject=New%20project%20inquiry">Start a project</a></li>
+      </ul>
+      <p class="footer-copy" style="text-align:right;">© 2026 Plot &amp; Palette</p>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.faq-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.faq-item');
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i => {
+          i.classList.remove('open');
+          i.querySelector('.faq-btn').setAttribute('aria-expanded', 'false');
+        });
+        if (!isOpen) {
+          item.classList.add('open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    // Sparkle effect
+    const SPARKLE_COLORS = ['#8B7BF5', '#FF6B5B', '#13BFA6', '#FFC857'];
+    const SPARKLE_PATH = 'M9.82531 0.843845C10.0553 0.215178 10.9446 0.215178 11.1746 0.843845L11.8618 2.72026C12.4006 4.19229 12.3916 6.39157 13.5 7.5C14.6084 8.60843 16.8077 8.59935 18.2797 9.13822L20.1561 9.82534C20.7858 10.0553 20.7858 10.9447 20.1561 11.1747L18.2797 11.8618C16.8077 12.4007 14.6084 12.3916 13.5 13.5C12.3916 14.6084 12.4006 16.8077 11.8618 18.2798L11.1746 20.1562C10.9446 20.7858 10.0553 20.7858 9.82531 20.1562L9.13819 18.2798C8.59932 16.8077 8.60843 14.6084 7.5 13.5C6.39157 12.3916 4.19225 12.4007 2.72023 11.8618L0.843814 11.1747C0.215148 10.9447 0.215148 10.0553 0.843814 9.82534L2.72023 9.13822C4.19225 8.59935 6.39157 8.60843 7.5 7.5C8.60843 6.39157 8.59932 4.19229 9.13819 2.72026L9.82531 0.843845Z';
+
+    function spawnSparkle(wrap) {
+      const color = SPARKLE_COLORS[Math.floor(Math.random() * SPARKLE_COLORS.length)];
+      const size  = Math.random() * 18 + 10;
+      const dur   = (Math.random() * 0.6 + 0.7).toFixed(2);
+      const delay = (Math.random() * 0.5).toFixed(2);
+      const side  = Math.floor(Math.random() * 4);
+      let x, y;
+      if (side === 0) { x = Math.random() * 100;      y = Math.random() * 10 - 23; }
+      else if (side === 1) { x = Math.random() * 10 + 90; y = Math.random() * 100 - 10; }
+      else if (side === 2) { x = Math.random() * 100;      y = Math.random() * 10 + 95; }
+      else                 { x = Math.random() * 10 - 12;  y = Math.random() * 100 - 10; }
+
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('width', size);
+      svg.setAttribute('height', size);
+      svg.setAttribute('viewBox', '0 0 21 21');
+      svg.style.cssText = `position:absolute;left:${x}%;top:${y}%;pointer-events:none;z-index:20;opacity:0;animation:sparkle-pop ${dur}s ${delay}s ease-in-out forwards;`;
+
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', SPARKLE_PATH);
+      path.setAttribute('fill', color);
+      svg.appendChild(path);
+      wrap.appendChild(svg);
+
+      setTimeout(() => svg.remove(), (parseFloat(dur) + parseFloat(delay)) * 1000 + 150);
+    }
+
+    // Steady stream for each sparkle-wrap
+    document.querySelectorAll('.sparkle-wrap').forEach(wrap => {
+      spawnSparkle(wrap);
+      setInterval(() => spawnSparkle(wrap), 280);
+    });
+
+    // Project carousel
+    const projScroll = document.getElementById('proj-scroll');
+    const projPrev   = document.getElementById('proj-prev');
+    const projNext   = document.getElementById('proj-next');
+
+    function isMobile() { return window.innerWidth <= 600; }
+
+    function sizeMobileCards() {
+      if (!isMobile()) {
+        document.querySelectorAll('.pc.lg').forEach(c => { c.style.width = ''; c.style.height = ''; });
+        return;
+      }
+      const w = projScroll.clientWidth;
+      const h = Math.round(w * (149 / 213));
+      document.querySelectorAll('.pc.lg').forEach(c => { c.style.width = w + 'px'; c.style.height = h + 'px'; });
+    }
+
+    function getScrollAmt() {
+      return isMobile() ? projScroll.clientWidth + 18 : 478;
+    }
+
+    function updateCarouselBtns() {
+      projPrev.disabled = projScroll.scrollLeft <= 0;
+      projNext.disabled = projScroll.scrollLeft + projScroll.clientWidth >= projScroll.scrollWidth - 1;
+    }
+
+    sizeMobileCards();
+    window.addEventListener('resize', sizeMobileCards);
+
+    projPrev.addEventListener('click', () => {
+      projScroll.scrollBy({ left: -getScrollAmt(), behavior: 'smooth' });
+    });
+    projNext.addEventListener('click', () => {
+      projScroll.scrollBy({ left: getScrollAmt(), behavior: 'smooth' });
+    });
+    projScroll.addEventListener('scroll', updateCarouselBtns);
+    updateCarouselBtns();
+
+    // Starburst sparkles on card hover
+    const sparkleColors = ['var(--lavender)', 'var(--teal)', 'var(--coral)', 'var(--sunbeam)'];
+    const sparklePos = [
+      { top: '4px', left: '4px' },
+      { top: '4px', right: '4px' },
+      { bottom: '5px', right: '4px' },
+      { bottom: '5px', left: '4px' },
+    ];
+    document.querySelectorAll('.pc').forEach(card => {
+      sparklePos.forEach((pos, i) => {
+        const el = document.createElement('span');
+        el.className = 'pc-sparkle';
+        el.textContent = '✦';
+        el.style.color = sparkleColors[i];
+        Object.assign(el.style, pos);
+        card.appendChild(el);
+      });
+      const sparkles = card.querySelectorAll('.pc-sparkle');
+      card.addEventListener('mouseenter', () => {
+        sparkles.forEach((s, i) => { s.style.transitionDelay = `${i * 0.06}s`; });
+      });
+      card.addEventListener('mouseleave', () => {
+        sparkles.forEach(s => { s.style.transitionDelay = '0s'; });
+      });
+    });
+
+    // Mobile nav
+    const hamburger = document.querySelector('.hamburger');
+    const navDrawer = document.getElementById('nav-drawer');
+    hamburger.addEventListener('click', () => {
+      const isOpen = navDrawer.classList.toggle('open');
+      hamburger.classList.toggle('is-open', isOpen);
+      hamburger.setAttribute('aria-expanded', isOpen);
+      navDrawer.setAttribute('aria-hidden', !isOpen);
+    });
+    navDrawer.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const target = link.getAttribute('href');
+        navDrawer.classList.remove('open');
+        hamburger.classList.remove('is-open');
+        hamburger.setAttribute('aria-expanded', 'false');
+        navDrawer.setAttribute('aria-hidden', 'true');
+        setTimeout(() => {
+          const el = document.querySelector(target);
+          if (el) {
+            const margin = parseInt(getComputedStyle(el).scrollMarginTop) || 100;
+            const top = el.getBoundingClientRect().top + window.scrollY - margin;
+            window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+          }
+        }, 310);
+      });
+    });
+
+    // Email picker
+    const EMAIL_ADDR = 'plotandpalettestudio@gmail.com';
+    const EMAIL_SUBJECT = 'New project inquiry';
+
+    const picker = document.createElement('div');
+    picker.className = 'email-picker';
+    picker.innerHTML = `
+      <button class="ep-btn ep-copy"><span class="ep-icon">⎘</span><span>Copy email address</span></button>
+      <button class="ep-btn ep-gmail"><span class="ep-icon">G</span><span>Open in Gmail</span></button>
+      <button class="ep-btn ep-outlook"><span class="ep-icon">O</span><span>Open in Outlook</span></button>
+    `;
+    document.body.appendChild(picker);
+
+    function showPicker(e, anchor) {
+      e.preventDefault();
+      const r = anchor.getBoundingClientRect();
+      picker.style.top = (r.bottom + 8) + 'px';
+      picker.style.left = r.left + 'px';
+      picker.classList.add('open');
+      requestAnimationFrame(() => {
+        const pr = picker.getBoundingClientRect();
+        if (pr.right > window.innerWidth - 12) picker.style.left = (window.innerWidth - pr.width - 12) + 'px';
+        if (pr.bottom > window.innerHeight - 12) picker.style.top = (r.top - pr.height - 8) + 'px';
+      });
+    }
+
+    document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+      link.addEventListener('click', e => showPicker(e, link));
+    });
+
+    picker.querySelector('.ep-copy').addEventListener('click', () => {
+      navigator.clipboard.writeText(EMAIL_ADDR).then(() => {
+        const label = picker.querySelector('.ep-copy span:last-child');
+        label.textContent = 'Copied!';
+        setTimeout(() => { label.textContent = 'Copy email address'; picker.classList.remove('open'); }, 1500);
+      });
+    });
+
+    picker.querySelector('.ep-gmail').addEventListener('click', () => {
+      window.open(`https://mail.google.com/mail/?view=cm&to=${EMAIL_ADDR}&su=${encodeURIComponent(EMAIL_SUBJECT)}`, '_blank');
+      picker.classList.remove('open');
+    });
+
+    picker.querySelector('.ep-outlook').addEventListener('click', () => {
+      window.open(`https://outlook.live.com/mail/0/deeplink/compose?to=${EMAIL_ADDR}&subject=${encodeURIComponent(EMAIL_SUBJECT)}`, '_blank');
+      picker.classList.remove('open');
+    });
+
+    document.addEventListener('click', e => {
+      if (!picker.contains(e.target) && !e.target.closest('a[href^="mailto:"]')) picker.classList.remove('open');
+    });
+  </script>
+
+</body>
+</html>
